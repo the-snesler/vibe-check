@@ -616,7 +616,7 @@ function FooterSection({ hasSession }: { hasSession: boolean }) {
             Lanyard
           </a>
           <a
-            href="http://samnesler.com/posts/privacy-policy/"
+            href="https://samnesler.com/posts/privacy-policy/"
             class="hover:text-gray-400 transition-colors"
             target="_blank"
             rel="noopener"
@@ -624,7 +624,7 @@ function FooterSection({ hasSession }: { hasSession: boolean }) {
             Privacy Policy
           </a>
           <a
-            href="http://samnesler.com/posts/terms-of-service/"
+            href="https://samnesler.com/posts/terms-of-service/"
             class="hover:text-gray-400 transition-colors"
             target="_blank"
             rel="noopener"
