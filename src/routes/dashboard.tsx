@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { csrf } from "hono/csrf";
-import type { AppEnv, PrivacySettings } from "../lib/types";
+import type { AppEnv, PrivacySettings, StoredLocation } from "../lib/types";
 import { DEFAULT_PRIVACY_SETTINGS } from "../lib/types";
 import { requireAuth } from "../middleware/session";
 import {
@@ -36,7 +36,10 @@ dashboard.get("/", async (c) => {
 
   const overlandEndpoint = `${c.req.url.split('/dashboard')[0]}/api/overland/${user.id}`;
   const statusEndpoint = `${c.req.url.split('/dashboard')[0]}/api/status/${user.api_key}`;
+  const mcpEndpoint = `${c.req.url.split('/dashboard')[0]}/mcp`;
   const overlandSetupUrl = `overland://setup?url=${encodeURIComponent(overlandEndpoint)}&token=${encodeURIComponent(user.overland_token)}&device_id=1&unique_id=yes`;
+  const locationJson = await c.env.STATUS_KV.get(`location:${user.id}`);
+  const overlandUpdateText = buildUpdateText(locationJson);
 
   return c.render(
     <div class="min-h-screen bg-blueprint text-gray-900">
@@ -65,39 +68,9 @@ dashboard.get("/", async (c) => {
         </header>
 
         <section class="bg-gray-800 bg-opacity-50 border border-gray-700 rounded-lg p-6 mb-6">
-          <h2 class="text-lg font-semibold mb-2 text-white">Your Status API</h2>
+          <h2 class="text-lg font-semibold mb-2 text-white">Step 1: Overland GPS Tracking</h2>
           <p class="text-sm text-gray-300 mb-3">
-            Share this URL with AI assistants or anyone who needs your live
-            status:
-          </p>
-          <div class="bg-gray-900 rounded p-3 font-mono text-sm break-all mb-4 text-gray-200">
-            {statusEndpoint}
-          </div>
-          <div class="flex items-center gap-3">
-            <span class="text-sm text-gray-400">API Key:</span>
-            <code class="bg-gray-900 px-2 py-1 rounded text-sm font-mono text-gray-200">
-              {user.api_key}
-            </code>
-            <form
-              method="post"
-              action="/dashboard/regenerate-api-key"
-              class="inline"
-            >
-              <button
-                type="submit"
-                class="text-sm text-red-400 hover:text-red-300 underline"
-                onclick="return confirm('Regenerate API key? Existing integrations will break.')"
-              >
-                Regenerate
-              </button>
-            </form>
-          </div>
-        </section>
-
-        <section class="bg-gray-800 bg-opacity-50 border border-gray-700 rounded-lg p-6 mb-6">
-          <h2 class="text-lg font-semibold mb-2 text-white">Overland GPS Tracking</h2>
-          <p class="text-sm text-gray-300 mb-3">
-            Configure the{" "}
+            Download and configure the{" "}
             <a
               href="https://overland.p3k.app/"
               class="text-blue-400 hover:underline"
@@ -134,7 +107,7 @@ dashboard.get("/", async (c) => {
             <label class="block text-sm font-medium text-gray-200 mb-1">
               Token (paste into Overland's "Access Token" field)
             </label>
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-3 mb-4">
               <code class="bg-gray-900 px-2 py-1 rounded text-sm font-mono break-all text-gray-200">
                 {user.overland_token}
               </code>
@@ -153,21 +126,24 @@ dashboard.get("/", async (c) => {
               </form>
             </div>
           </div>
+          <p class="text-xs text-gray-400 leading-none">
+            Latest update: {overlandUpdateText} (reload to refresh)
+          </p>
         </section>
 
         <section class="bg-gray-800 bg-opacity-50 border border-gray-700 rounded-lg p-6 mb-6">
-          <h2 class="text-lg font-semibold mb-2 text-white">Discord Integration</h2>
+          <h2 class="text-lg font-semibold mb-2 text-white">Step 2 (optional): Discord Integration</h2>
           <p class="text-sm text-gray-300 mb-3">
-            Connect your Discord presence via{" "}
+            Join the {" "}
             <a
               href="https://github.com/Phineas/lanyard"
               class="text-blue-400 hover:underline"
               target="_blank"
               rel="noopener"
             >
-              Lanyard
+              Lanyard Discord server
             </a>
-            . Your Discord status, activities, and Spotify will appear in your
+            {" "}and input your user ID below. Your Discord status, activities, and Spotify will appear in your
             status API response.
           </p>
 
@@ -217,6 +193,41 @@ dashboard.get("/", async (c) => {
             To find your Discord ID: enable Developer Mode in Discord settings,
             then right-click your name and "Copy User ID".
           </p>
+        </section>
+
+        <section class="bg-gray-800 bg-opacity-50 border border-gray-700 rounded-lg p-6 mb-6">
+          <h2 class="text-lg font-semibold mb-2 text-white">Step 3: Your Status API</h2>
+          <p class="text-sm text-gray-300 mb-3">
+            Share this URL with AI assistants:
+          </p>
+          <div class="bg-gray-900 rounded p-3 font-mono text-sm break-all mb-4 text-gray-200">
+            {statusEndpoint}
+          </div>
+          <p class="text-sm text-gray-300 mb-3">
+            Or use the following MCP server in compatible AI assistants:
+          </p>
+          <div class="bg-gray-900 rounded p-3 font-mono text-sm break-all mb-4 text-gray-200">
+            {mcpEndpoint}
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-sm text-gray-400">API Key:</span>
+            <code class="bg-gray-900 px-2 py-1 rounded text-sm font-mono break-all text-gray-200">
+              {user.api_key}
+            </code>
+            <form
+              method="post"
+              action="/dashboard/regenerate-api-key"
+              class="inline"
+            >
+              <button
+                type="submit"
+                class="text-sm text-red-400 hover:text-red-300 underline"
+                onclick="return confirm('Regenerate API key? Existing integrations will break.')"
+              >
+                Regenerate
+              </button>
+            </form>
+          </div>
         </section>
 
         <PrivacySection settings={privacySettings} />
@@ -368,6 +379,38 @@ function PrivacySection({ settings }: { settings: PrivacySettings }) {
       </form>
     </section>
   );
+}
+
+function buildUpdateText(locationJson: string | null): string {
+  if (!locationJson) return "never";
+
+  let raw: StoredLocation;
+  try {
+    raw = JSON.parse(locationJson) as StoredLocation;
+  } catch {
+    return "unknown";
+  }
+
+  const timestampMs = new Date(raw.timestamp).getTime();
+  if (Number.isNaN(timestampMs)) return "unknown";
+
+  const ageSeconds = Math.max(0, Math.round((Date.now() - timestampMs) / 1000));
+  if (ageSeconds < 10) return "just now";
+  if (ageSeconds < 60) return `${ageSeconds}s ago`;
+
+  const ageMinutes = Math.floor(ageSeconds / 60);
+  if (ageMinutes < 60) return `${ageMinutes}m ago`;
+
+  const ageHours = Math.floor(ageMinutes / 60);
+  if (ageHours < 24) {
+    const minutesRemainder = ageMinutes % 60;
+    return minutesRemainder
+      ? `${ageHours}h ${minutesRemainder}m ago`
+      : `${ageHours}h ago`;
+  }
+
+  const ageDays = Math.floor(ageHours / 24);
+  return ageDays === 1 ? "1d ago" : `${ageDays}d ago`;
 }
 
 export default dashboard;

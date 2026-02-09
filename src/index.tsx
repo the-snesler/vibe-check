@@ -281,7 +281,7 @@ function HowItWorksSection() {
           {steps.map((step, i) => (
             <div class={`reveal reveal-delay-${i + 1}`}>
               <div
-                class={`relative bg-white/[0.03] border ${step.borderColor} rounded-xl p-6 text-center hover:bg-white/[0.06] transition-colors duration-300`}
+                class={`h-full relative bg-white/[0.03] border ${step.borderColor} rounded-xl p-6 text-center hover:bg-white/[0.06] transition-colors duration-300`}
               >
                 {/* Step number */}
                 <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#13102e] px-3">
