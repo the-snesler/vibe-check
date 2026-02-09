@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "status-endpoint",
+  "compatibility_date": "2025-08-03",
+  "main": "./src/index.tsx",
+  "routes": [
+    {
+      "pattern": "status.samnesler.com",
+      "custom_domain": true
+    }
+  ],
+  "preview_urls": true
+}
