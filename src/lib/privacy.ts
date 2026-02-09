@@ -39,10 +39,10 @@ export function applyPrivacy(
       Math.round(result.coordinates.longitude * 10) / 10;
   }
 
-  // Null out hidden fields
+  // Completely remove hidden fields
   for (const field of settings.hide_fields) {
     if (HIDEABLE_FIELDS.includes(field as (typeof HIDEABLE_FIELDS)[number])) {
-      (result as Record<string, unknown>)[field] = null;
+      delete (result as any)[field];
     }
   }
 
