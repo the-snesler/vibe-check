@@ -1,0 +1,67 @@
+---
+import { Icon } from 'astro-icon/components'
+
+const features = [
+  {
+    icon: "dinkie-icons:code",
+    title: "REST API",
+    desc: "Simple GET request returns your full status as JSON. Cache-friendly with 30s TTL.",
+    color: "text-blue-400",
+  },
+  {
+    icon: "dinkie-icons:satellite-antenna",
+    title: "MCP Server",
+    desc: "Native Model Context Protocol support. AI assistants get a get_status tool out of the box.",
+    color: "text-purple-400",
+  },
+  {
+    icon: "dinkie-icons:musical-note",
+    title: "Discord Presence",
+    desc: "Status, current activity, and Spotify track — all included automatically via Lanyard.",
+    color: "text-pink-400",
+  },
+  {
+    icon: "dinkie-icons:location-pin-filled",
+    title: "GPS Tracking",
+    desc: "Background location from Overland iOS. One-tap setup from the dashboard.",
+    color: "text-emerald-400",
+  },
+];
+---
+
+<section
+  class="relative bg-gradient-to-b from-[#13102e] to-[#110e28] py-16 md:py-24 px-4"
+>
+  <div class="max-w-5xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <span
+        class="inline-block text-xs tracking-[0.2em] uppercase text-purple-400 mb-3 font-medium font-[JetBrains_Mono]"
+      >
+        Features
+      </span>
+      <h2 class="text-3xl md:text-4xl font-bold text-white">
+        Everything your AI needs
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {
+        features.map((f, i) => (
+          <div class={`reveal reveal-delay-${i + 1}`}>
+            <div class="group bg-white/[0.03] border border-white/[0.06] rounded-xl p-6 hover:bg-white/[0.06] hover:border-white/10 transition-all duration-300">
+              <div
+                class={`inline-flex items-center justify-center w-10 h-10 rounded-lg bg-white/5 ${f.color} mb-4 group-hover:scale-110 transition-transform duration-300`}
+              >
+                <Icon name={f.icon} class="w-6 h-6" />
+              </div>
+              <h3 class="text-base font-semibold text-white mb-1.5">
+                {f.title}
+              </h3>
+              <p class="text-sm text-gray-400 leading-relaxed">{f.desc}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

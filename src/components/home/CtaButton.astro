@@ -1,0 +1,30 @@
+---
+import { getSession } from "auth-astro/server";
+import { SignIn } from 'auth-astro/components'
+
+const session = await getSession(Astro.request);
+---
+
+{
+  session ? (
+    <a
+      href="/dashboard"
+      class="group relative inline-flex items-center gap-2 bg-linear-to-r from-purple-600 to-blue-500 text-white px-8 py-3 rounded-lg font-medium transition-all duration-300 hover:shadow-[0_0_30px_rgba(124,58,237,0.4)] hover:scale-[1.02]"
+    >
+      Go to Dashboard
+      <span class="inline-block transition-transform group-hover:translate-x-0.5">
+        &rarr;
+      </span>
+    </a>
+  ) : (
+    <SignIn
+      class="group relative inline-flex items-center gap-2 bg-linear-to-r from-purple-600 to-blue-500 text-white px-8 py-3 rounded-lg font-medium transition-all duration-300 hover:shadow-[0_0_30px_rgba(124,58,237,0.4)] hover:scale-[1.02]"
+      provider="google"
+    >
+      Get Started
+      <span class="inline-block transition-transform group-hover:translate-x-0.5">
+        &rarr;
+      </span>
+    </SignIn>
+  )
+}

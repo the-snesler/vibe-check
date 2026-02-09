@@ -1,0 +1,69 @@
+---
+import { Icon } from 'astro-icon/components'
+import CtaButton from './CtaButton.astro'
+---
+
+<footer class="relative bg-[#0f0d2e] pt-20 pb-12 px-4">
+      {/* Top border glow */}
+      <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/20 to-transparent" />
+
+      <div class="max-w-3xl mx-auto text-center">
+        {/* Final CTA */}
+        <div class="mb-16 reveal">
+          <p class="text-xl text-gray-300 mb-6">
+            Ready to give your AI some context?
+          </p>
+          <CtaButton />
+        </div>
+
+        {/* Links */}
+        <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-gray-600 mb-8">
+          <a
+            href="https://github.com/the-snesler/vibe-check"
+            class="hover:text-gray-400 transition-colors"
+            target="_blank"
+            rel="noopener"
+          >
+            GitHub
+          </a>
+          <a
+            href="https://overland.p3k.app/"
+            class="hover:text-gray-400 transition-colors"
+            target="_blank"
+            rel="noopener"
+          >
+            Overland
+          </a>
+          <a
+            href="https://github.com/Phineas/lanyard"
+            class="hover:text-gray-400 transition-colors"
+            target="_blank"
+            rel="noopener"
+          >
+            Lanyard
+          </a>
+          <a
+            href="https://samnesler.com/posts/privacy-policy/"
+            class="hover:text-gray-400 transition-colors"
+            target="_blank"
+            rel="noopener"
+          >
+            Privacy Policy
+          </a>
+          <a
+            href="https://samnesler.com/posts/terms-of-service/"
+            class="hover:text-gray-400 transition-colors"
+            target="_blank"
+            rel="noopener"
+          >
+            Terms of Service
+          </a>
+        </div>
+
+        {/* Cloudflare badge + mascot */}
+        <div class="flex items-center justify-center gap-2 text-gray-700 text-xs">
+          <Icon name="dinkie-icons:alien-monster-small" class="w-4 h-4 text-gray-700" />
+          <span>Built on Cloudflare Workers</span>
+        </div>
+      </div>
+    </footer>

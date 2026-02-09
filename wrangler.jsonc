@@ -1,0 +1,30 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "status-endpoint",
+  "compatibility_date": "2025-08-03",
+  "main": "./src/index.tsx",
+  "routes": [
+    {
+      "pattern": "vibecheck.tsuni.dev",
+      "custom_domain": true
+    }
+  ],
+  "preview_urls": true,
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "status-endpoint-db",
+      "database_id": "ecfe80fb-9a86-4afe-a865-185c69ee0284"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "STATUS_KV",
+      "id": "c3eb0023d12f44cfa269df10da417f2a"
+    },
+    {
+      "binding": "SESSIONS",
+      "id": "7f886760cbaa414d90577f9f42aad78b"
+    }
+  ]
+}

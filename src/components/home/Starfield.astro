@@ -1,0 +1,29 @@
+---
+const stars = [
+  { top: "8%", left: "15%", delay: "0s", large: false },
+  { top: "12%", left: "72%", delay: "1.2s", large: true },
+  { top: "20%", left: "40%", delay: "2.4s", large: false },
+  { top: "28%", left: "85%", delay: "0.6s", large: false },
+  { top: "35%", left: "10%", delay: "1.8s", large: true },
+  { top: "42%", left: "55%", delay: "3s", large: false },
+  { top: "50%", left: "25%", delay: "0.3s", large: false },
+  { top: "58%", left: "78%", delay: "2.1s", large: true },
+  { top: "65%", left: "45%", delay: "1.5s", large: false },
+  { top: "72%", left: "8%", delay: "0.9s", large: false },
+  { top: "18%", left: "58%", delay: "3.3s", large: false },
+  { top: "80%", left: "65%", delay: "2.7s", large: false },
+  { top: "45%", left: "92%", delay: "1s", large: true },
+  { top: "6%", left: "30%", delay: "2s", large: false },
+  { top: "88%", left: "20%", delay: "0.5s", large: false },
+  { top: "15%", left: "90%", delay: "3.6s", large: false },
+];
+---
+
+{
+  stars.map((s) => (
+    <div
+      class={`star ${s.large ? "star-lg" : ""}`}
+      style={`top:${s.top};left:${s.left};animation-delay:${s.delay}`}
+    />
+  ))
+}

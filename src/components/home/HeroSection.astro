@@ -1,0 +1,43 @@
+---
+import CtaButton from "./CtaButton.astro";
+import Starfield from "./Starfield.astro";
+---
+
+<section
+  class="relative min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#0f0d2e] via-[#120f35] to-[#1a1145] overflow-hidden px-4"
+>
+  <Starfield />
+
+  {/* Radial glow behind logo */}
+  <div
+    class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-purple-600/[0.07] blur-3xl pointer-events-none"
+  >
+  </div>
+
+  <div class="relative z-10 flex flex-col items-center text-center max-w-2xl">
+    <img src="/logo.webp" alt="Vibe Check Logo" class="w-64 h-64 mb-4" />
+
+    <h1 class="text-5xl md:text-7xl font-bold text-white mb-4 tracking-tight">
+      Vibe Check
+    </h1>
+
+    <p class="text-xl md:text-2xl text-gray-300 mb-3 max-w-lg">
+      Give your AI assistants eyes on the real world.
+    </p>
+
+    <p class="text-gray-500 mb-10 max-w-md leading-relaxed">
+      Share your real-time location and Discord presence with personal AI
+      assistants&mdash;securely and on your terms.
+    </p>
+
+    <CtaButton />
+  </div>
+
+  {/* Scroll hint */}
+  <div
+    class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-600"
+  >
+    <span class="text-xs tracking-widest uppercase">Scroll</span>
+    <div class="w-px h-6 bg-gradient-to-b from-gray-600 to-transparent"></div>
+  </div>
+</section>
