@@ -22,7 +22,7 @@ app.get("/", async (c) => {
   return c.render(
     <div class="min-h-screen bg-gray-50 flex items-center justify-center">
       <div class="max-w-md mx-auto px-4 text-center">
-        <h1 class="text-3xl font-bold mb-4">Status</h1>
+        <h1 class="text-3xl font-bold mb-4">Vibe Check</h1>
         <p class="text-gray-600 mb-6">
           Share your live location and presence with AI assistants, securely.
         </p>

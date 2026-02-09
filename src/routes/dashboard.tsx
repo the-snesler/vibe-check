@@ -17,7 +17,7 @@ const dashboard = new Hono<AppEnv>();
 dashboard.use("*", requireAuth);
 dashboard.use(
   "*",
-  csrf({ origin: (origin) => origin.endsWith("samnesler.com") || origin.includes("localhost") })
+  csrf({ origin: (origin) => origin.endsWith("tsuni.dev") || origin.includes("localhost") })
 );
 
 dashboard.get("/", async (c) => {
@@ -31,14 +31,14 @@ dashboard.get("/", async (c) => {
     ? JSON.parse(user.privacy_settings)
     : DEFAULT_PRIVACY_SETTINGS;
 
-  const overlandEndpoint = `https://status.samnesler.com/api/overland/${user.id}`;
-  const statusEndpoint = `https://status.samnesler.com/api/status/${user.api_key}`;
+  const overlandEndpoint = `https://vibecheck.tsuni.dev/api/overland/${user.id}`;
+  const statusEndpoint = `https://vibecheck.tsuni.dev/api/status/${user.api_key}`;
   const overlandSetupUrl = `overland://setup?url=${encodeURIComponent(overlandEndpoint)}&token=${encodeURIComponent(user.overland_token)}&device_id=1&unique_id=yes`;
 
   return c.render(
     <div class="max-w-2xl mx-auto px-4 py-8">
       <header class="flex items-center justify-between mb-8">
-        <h1 class="text-2xl font-bold">Status Dashboard</h1>
+        <h1 class="text-2xl font-bold">Vibe Check Dashboard</h1>
         <div class="flex items-center gap-3">
           {user.picture_url && (
             <img

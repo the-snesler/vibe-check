@@ -5,7 +5,7 @@
   "main": "./src/index.tsx",
   "routes": [
     {
-      "pattern": "status.samnesler.com",
+      "pattern": "vibecheck.tsuni.dev",
       "custom_domain": true
     }
   ],
