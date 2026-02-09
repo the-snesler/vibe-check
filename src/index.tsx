@@ -7,6 +7,7 @@ import auth from "./routes/auth";
 import dashboard from "./routes/dashboard";
 import overland from "./routes/overland";
 import status from "./routes/status";
+import mcp from "./routes/mcp";
 
 const app = new Hono<AppEnv>();
 
@@ -49,5 +50,6 @@ app.route("/auth", auth);
 app.route("/dashboard", dashboard);
 app.route("/api/overland", overland);
 app.route("/api/status", status);
+app.route("/mcp", mcp);
 
 export default app;

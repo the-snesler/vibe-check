@@ -11,6 +11,16 @@ export type AppEnv = {
   };
 };
 
+export interface PrivacySettings {
+  location_precision: "exact" | "city" | "region" | "hidden";
+  hide_fields: string[];
+}
+
+export const DEFAULT_PRIVACY_SETTINGS: PrivacySettings = {
+  location_precision: "exact",
+  hide_fields: [],
+};
+
 export interface UserRow {
   id: string;
   google_id: string;
@@ -20,6 +30,7 @@ export interface UserRow {
   api_key: string;
   overland_token: string;
   discord_id: string | null;
+  privacy_settings: string; // JSON string of PrivacySettings
   created_at: string;
   updated_at: string;
 }
@@ -68,8 +79,6 @@ export interface OverlandLocation {
   };
 }
 
-// TODO: Add privacy controls - allow users to configure which fields are exposed
-// TODO: Add precision controls - allow rounding coordinates
 export interface StoredLocation {
   coordinates: {
     latitude: number;
@@ -91,13 +100,38 @@ export interface StoredLocation {
   received_at: string;
 }
 
+export interface LanyardActivity {
+  type: number;
+  name: string;
+  state?: string;
+  details?: string;
+}
+
+export interface LanyardSpotify {
+  song: string;
+  artist: string;
+  album: string;
+  album_art_url: string;
+  timestamps: { start: number; end: number };
+}
+
+export interface LanyardData {
+  discord_status: string;
+  active_on_discord_desktop: boolean;
+  active_on_discord_mobile: boolean;
+  active_on_discord_web: boolean;
+  listening_to_spotify: boolean;
+  spotify: LanyardSpotify | null;
+  activities: LanyardActivity[];
+}
+
 export interface StatusResponse {
   ok: true;
   user: {
     name: string;
   };
   location: StoredLocation | null;
-  // TODO: Add discord field for Lanyard data in Phase 2
+  discord: LanyardData | null;
   _meta: {
     generated_at: string;
     data_age_seconds: number | null;

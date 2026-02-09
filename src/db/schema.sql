@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS users (
   api_key TEXT NOT NULL UNIQUE,
   overland_token TEXT NOT NULL UNIQUE,
   discord_id TEXT,
+  privacy_settings TEXT NOT NULL DEFAULT '{"location_precision":"exact","hide_fields":[]}',
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
