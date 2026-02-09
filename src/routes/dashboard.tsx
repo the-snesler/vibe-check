@@ -26,6 +26,7 @@ dashboard.get("/", async (c) => {
 
   const overlandEndpoint = `https://status.samnesler.com/api/overland/${user.id}`;
   const statusEndpoint = `https://status.samnesler.com/api/status/${user.api_key}`;
+  const overlandSetupUrl = `overland://setup?url=${encodeURIComponent(overlandEndpoint)}&token=${encodeURIComponent(user.overland_token)}&device_id=1&unique_id=yes`;
 
   return c.render(
     <div class="max-w-2xl mx-auto px-4 py-8">
@@ -96,6 +97,18 @@ dashboard.get("/", async (c) => {
           </a>{" "}
           with these settings:
         </p>
+
+        <div class="mb-4">
+          <a
+            href={overlandSetupUrl}
+            class="inline-block bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors text-sm"
+          >
+            Open in Overland
+          </a>
+          <p class="text-xs text-gray-500 mt-1">
+            Tap on your iPhone to auto-configure the Overland app.
+          </p>
+        </div>
 
         <div class="mb-4">
           <label class="block text-sm font-medium text-gray-700 mb-1">
