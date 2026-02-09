@@ -10,6 +10,7 @@ import { DEFAULT_PRIVACY_SETTINGS } from "../lib/types";
 import { getUserByApiKey } from "../db/queries";
 import { fetchLanyardPresence } from "../lib/lanyard";
 import { applyPrivacy } from "../lib/privacy";
+import { reverseGeocode, filterAddressByPrecision } from "../lib/geocode";
 
 const status = new Hono<AppEnv>();
 
@@ -33,9 +34,13 @@ status.get("/:apiKey", async (c) => {
   const locationJson = await c.env.STATUS_KV.get(`location:${user.id}`);
   let location: StoredLocation | null = null;
   let dataAgeSeconds: number | null = null;
+  let rawLat: number | undefined;
+  let rawLon: number | undefined;
 
   if (locationJson) {
     const raw = JSON.parse(locationJson) as StoredLocation;
+    rawLat = raw.coordinates.latitude;
+    rawLon = raw.coordinates.longitude;
     location = applyPrivacy(raw, privacySettings);
     if (location) {
       const locationTime = new Date(raw.timestamp).getTime();
@@ -43,10 +48,18 @@ status.get("/:apiKey", async (c) => {
     }
   }
 
-  // Fetch Discord presence if configured
-  const discord = user.discord_id
-    ? await fetchLanyardPresence(user.discord_id)
-    : null;
+  // Fetch Discord presence and geocode in parallel
+  const [discord, rawAddress] = await Promise.all([
+    user.discord_id ? fetchLanyardPresence(user.discord_id) : null,
+    rawLat !== undefined && rawLon !== undefined
+      ? reverseGeocode(rawLat, rawLon, c.env.MAPBOX_TOKEN, c.env.STATUS_KV)
+      : null,
+  ]);
+
+  const address = filterAddressByPrecision(
+    rawAddress,
+    privacySettings.location_precision
+  );
 
   c.header("Cache-Control", "public, max-age=30");
 
@@ -54,6 +67,7 @@ status.get("/:apiKey", async (c) => {
     ok: true,
     user: { name: user.name },
     location,
+    address,
     discord,
     _meta: {
       generated_at: new Date().toISOString(),

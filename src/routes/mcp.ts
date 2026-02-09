@@ -7,6 +7,7 @@ import { DEFAULT_PRIVACY_SETTINGS } from "../lib/types";
 import { getUserByApiKey } from "../db/queries";
 import { fetchLanyardPresence } from "../lib/lanyard";
 import { applyPrivacy } from "../lib/privacy";
+import { reverseGeocode, filterAddressByPrecision } from "../lib/geocode";
 
 // Module-level env reference — safe because Workers handle one request at a time
 let currentEnv: AppEnv["Bindings"];
@@ -38,9 +39,13 @@ mcpServer.registerTool(
     const locationJson = await currentEnv.STATUS_KV.get(`location:${user.id}`);
     let location = null;
     let dataAgeSeconds = null;
+    let rawLat: number | undefined;
+    let rawLon: number | undefined;
 
     if (locationJson) {
       const raw = JSON.parse(locationJson);
+      rawLat = raw.coordinates.latitude;
+      rawLon = raw.coordinates.longitude;
       location = applyPrivacy(raw, privacySettings);
       if (location) {
         dataAgeSeconds = Math.round(
@@ -49,14 +54,23 @@ mcpServer.registerTool(
       }
     }
 
-    const discord = user.discord_id
-      ? await fetchLanyardPresence(user.discord_id)
-      : null;
+    const [discord, rawAddress] = await Promise.all([
+      user.discord_id ? fetchLanyardPresence(user.discord_id) : null,
+      rawLat !== undefined && rawLon !== undefined
+        ? reverseGeocode(rawLat, rawLon, currentEnv.MAPBOX_TOKEN, currentEnv.STATUS_KV)
+        : null,
+    ]);
+
+    const address = filterAddressByPrecision(
+      rawAddress,
+      privacySettings.location_precision
+    );
 
     const result = {
       ok: true,
       user: { name: user.name },
       location,
+      address,
       discord,
       _meta: {
         generated_at: new Date().toISOString(),

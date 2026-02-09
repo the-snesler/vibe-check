@@ -3,6 +3,7 @@ export type AppEnv = {
     GOOGLE_ID: string;
     GOOGLE_SECRET: string;
     SESSION_SECRET: string;
+    MAPBOX_TOKEN: string;
   };
   Variables: {
     userId: string;
@@ -125,12 +126,20 @@ export interface LanyardData {
   activities: LanyardActivity[];
 }
 
+export interface GeocodedAddress {
+  full_address: string | null;
+  place: string | null;
+  region: string | null;
+  country: string | null;
+}
+
 export interface StatusResponse {
   ok: true;
   user: {
     name: string;
   };
   location: StoredLocation | null;
+  address: GeocodedAddress | null;
   discord: LanyardData | null;
   _meta: {
     generated_at: string;

@@ -466,6 +466,32 @@ function ApiPreviewSection() {
                 <span class="text-gray-500">,</span>
                 {"\n"}
                 {"  "}
+                <span class="text-purple-400">"address"</span>
+                <span class="text-gray-500">:</span>{" "}
+                <span class="text-gray-500">{"{"}</span>
+                {"\n"}
+                {"    "}
+                <span class="text-purple-400">"place"</span>
+                <span class="text-gray-500">:</span>{" "}
+                <span class="text-emerald-400">"San Francisco"</span>
+                <span class="text-gray-500">,</span>
+                {"\n"}
+                {"    "}
+                <span class="text-purple-400">"region"</span>
+                <span class="text-gray-500">:</span>{" "}
+                <span class="text-emerald-400">"California"</span>
+                <span class="text-gray-500">,</span>
+                {"\n"}
+                {"    "}
+                <span class="text-purple-400">"country"</span>
+                <span class="text-gray-500">:</span>{" "}
+                <span class="text-emerald-400">"United States"</span>
+                {"\n"}
+                {"  "}
+                <span class="text-gray-500">{"}"}</span>
+                <span class="text-gray-500">,</span>
+                {"\n"}
+                {"  "}
                 <span class="text-purple-400">"discord"</span>
                 <span class="text-gray-500">:</span>{" "}
                 <span class="text-gray-500">{"{"}</span>
