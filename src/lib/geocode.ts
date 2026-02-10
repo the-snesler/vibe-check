@@ -36,10 +36,10 @@ export async function reverseGeocode(
 
     const props = feature.properties;
     const address: GeocodedAddress = {
-      full_address: props.full_address ?? null,
-      place: props.context?.place?.name ?? null,
-      region: props.context?.region?.name ?? null,
-      country: props.context?.country?.name ?? null,
+      full_address: props.full_address ?? undefined,
+      place: props.context?.place?.name ?? undefined,
+      region: props.context?.region?.name ?? undefined,
+      country: props.context?.country?.name ?? undefined,
     };
 
     await kv.put(cacheKey, JSON.stringify(address), {
@@ -62,13 +62,18 @@ export function filterAddressByPrecision(
 
   if (precision === "region") {
     return {
-      full_address: null,
-      place: null,
       region: address.region,
       country: address.country,
     };
   }
 
-  // "exact" and "city" — return all fields
+  if (precision === "city") {
+    return {
+      place: address.place,
+      region: address.region,
+      country: address.country,
+    };
+  }
+
   return address;
 }

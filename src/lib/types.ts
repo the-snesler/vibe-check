@@ -127,10 +127,10 @@ export interface LanyardData {
 }
 
 export interface GeocodedAddress {
-  full_address: string | null;
-  place: string | null;
-  region: string | null;
-  country: string | null;
+  full_address?: string;
+  place?: string;
+  region?: string;
+  country?: string;
 }
 
 export interface StatusResponse {
