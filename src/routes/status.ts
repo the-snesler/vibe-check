@@ -12,18 +12,13 @@ import { fetchLanyardPresence } from "../lib/lanyard";
 import { applyPrivacy } from "../lib/privacy";
 import { reverseGeocode, filterAddressByPrecision } from "../lib/geocode";
 
-const status = new Hono<AppEnv>();
-
-// TODO: Add rate limiting
-status.get("/:apiKey", async (c) => {
-  const apiKey = c.req.param("apiKey");
-
-  const user = await getUserByApiKey(c.env.DB, apiKey);
+export const fetchUserStatus = async (
+  apiKey: string,
+  currentEnv: AppEnv["Bindings"],
+): Promise<StatusResponse | StatusErrorResponse> => {
+  const user = await getUserByApiKey(currentEnv.DB, apiKey);
   if (!user) {
-    return c.json<StatusErrorResponse>(
-      { ok: false, error: "Invalid API key" },
-      404
-    );
+    return { ok: false, error: "Invalid API key" };
   }
 
   const privacySettings: PrivacySettings = user.privacy_settings
@@ -31,7 +26,7 @@ status.get("/:apiKey", async (c) => {
     : DEFAULT_PRIVACY_SETTINGS;
 
   // Load location from KV and apply privacy settings
-  const locationJson = await c.env.STATUS_KV.get(`location:${user.id}`);
+  const locationJson = await currentEnv.STATUS_KV.get(`location:${user.id}`);
   let location: StoredLocation | null = null;
   let dataAgeSeconds: number | null = null;
   let rawLat: number | undefined;
@@ -52,18 +47,21 @@ status.get("/:apiKey", async (c) => {
   const [discord, rawAddress] = await Promise.all([
     user.discord_id ? fetchLanyardPresence(user.discord_id) : null,
     rawLat !== undefined && rawLon !== undefined
-      ? reverseGeocode(rawLat, rawLon, c.env.MAPBOX_TOKEN, c.env.STATUS_KV)
+      ? reverseGeocode(
+          rawLat,
+          rawLon,
+          currentEnv.MAPBOX_TOKEN,
+          currentEnv.STATUS_KV,
+        )
       : null,
   ]);
 
   const address = filterAddressByPrecision(
     rawAddress,
-    privacySettings.location_precision
+    privacySettings.location_precision,
   );
 
-  c.header("Cache-Control", "public, max-age=30");
-
-  return c.json<StatusResponse>({
+  return {
     ok: true,
     user: { name: user.name },
     location,
@@ -73,7 +71,18 @@ status.get("/:apiKey", async (c) => {
       generated_at: new Date().toISOString(),
       data_age_seconds: dataAgeSeconds,
     },
-  });
-});
+  };
+};
+
+const status = new Hono<AppEnv>();
+
+// TODO: Add rate limiting
+status.get("/:apiKey", async (c) => {
+    const apiKey = c.req.param("apiKey");
+    const result = await fetchUserStatus(apiKey, c.env);
+    if (result.ok) c.header("Cache-Control", "public, max-age=30");
+    return c.json(result);
+  }
+);
 
 export default status;
