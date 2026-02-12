@@ -409,7 +409,7 @@ function ApiPreviewSection() {
                 <span class="text-gray-500">{"{"}</span>{" "}
                 <span class="text-purple-400">"name"</span>
                 <span class="text-gray-500">:</span>{" "}
-                <span class="text-emerald-400">"Sam"</span>{" "}
+                <span class="text-emerald-400">"Tsuni"</span>{" "}
                 <span class="text-gray-500">{"}"}</span>
                 <span class="text-gray-500">,</span>
                 {"\n"}
@@ -424,11 +424,11 @@ function ApiPreviewSection() {
                 <span class="text-gray-500">{"{"}</span>{" "}
                 <span class="text-purple-400">"lat"</span>
                 <span class="text-gray-500">:</span>{" "}
-                <span class="text-blue-400">37.78</span>
+                <span class="text-blue-400">43.06</span>
                 <span class="text-gray-500">,</span>{" "}
                 <span class="text-purple-400">"lng"</span>
                 <span class="text-gray-500">:</span>{" "}
-                <span class="text-blue-400">-122.41</span>{" "}
+                <span class="text-blue-400">-89.42</span>{" "}
                 <span class="text-gray-500">{"}"}</span>
                 <span class="text-gray-500">,</span>
                 {"\n"}
@@ -463,13 +463,13 @@ function ApiPreviewSection() {
                 {"    "}
                 <span class="text-purple-400">"place"</span>
                 <span class="text-gray-500">:</span>{" "}
-                <span class="text-emerald-400">"San Francisco"</span>
+                <span class="text-emerald-400">"Madison"</span>
                 <span class="text-gray-500">,</span>
                 {"\n"}
                 {"    "}
                 <span class="text-purple-400">"region"</span>
                 <span class="text-gray-500">:</span>{" "}
-                <span class="text-emerald-400">"California"</span>
+                <span class="text-emerald-400">"Wisconsin"</span>
                 <span class="text-gray-500">,</span>
                 {"\n"}
                 {"    "}
@@ -498,11 +498,11 @@ function ApiPreviewSection() {
                 <span class="text-gray-500">{"{"}</span>{" "}
                 <span class="text-purple-400">"song"</span>
                 <span class="text-gray-500">:</span>{" "}
-                <span class="text-emerald-400">"Redbone"</span>
+                <span class="text-emerald-400">"1-800"</span>
                 <span class="text-gray-500">,</span>{" "}
                 <span class="text-purple-400">"artist"</span>
                 <span class="text-gray-500">:</span>{" "}
-                <span class="text-emerald-400">"Childish Gambino"</span>{" "}
+                <span class="text-emerald-400">"bbno$, Ironmouse"</span>{" "}
                 <span class="text-gray-500">{"}"}</span>
                 {"\n"}
                 {"  "}
