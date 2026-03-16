@@ -13,7 +13,7 @@
     "@hono/mcp": "^0.2.3",
     "@hono/oauth-providers": "^0.8.5",
     "@modelcontextprotocol/sdk": "^1.26.0",
-    "hono": "^4.11.9",
+    "hono": "^4.12.7",
     "zod": "^4.3.6"
   },
   "devDependencies": {
